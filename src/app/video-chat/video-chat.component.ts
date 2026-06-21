@@ -28,7 +28,22 @@ export class VideoChatComponent implements OnInit, OnDestroy {
   private readonly rtcConfig: RTCConfiguration = {
     iceServers: [
       { urls: 'stun:stun.l.google.com:19302' },
-      { urls: 'stun:stun1.l.google.com:19302' }
+      { urls: 'stun:stun1.l.google.com:19302' },
+      {
+        urls: 'turn:openrelay.metered.ca:80',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      },
+      {
+        urls: 'turn:openrelay.metered.ca:443',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      },
+      {
+        urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      }
     ]
   };
 
@@ -156,6 +171,14 @@ export class VideoChatComponent implements OnInit, OnDestroy {
       if (this.peerConnection?.connectionState === 'connected') {
         this.status = 'Connected';
       }
+    };
+
+    this.peerConnection.oniceconnectionstatechange = () => {
+      console.log('🧊 ICE state:', this.peerConnection?.iceConnectionState);
+    };
+
+    this.peerConnection.onconnectionstatechange = () => {
+      console.log('🔗 Connection state:', this.peerConnection?.connectionState);
     };
   }
 
