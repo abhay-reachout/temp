@@ -1,0 +1,30 @@
+<div style="padding: 16px; font-family: sans-serif;">
+  <p>Status: {{ status }}</p>
+
+  <button (click)="startChat()" [disabled]="roomId !== ''">Start</button>
+
+  <div style="display: flex; gap: 16px; margin-top: 16px;">
+    <div>
+      <p>You</p>
+      <video #localVideo autoplay playsinline muted width="320" height="240"></video>
+    </div>
+    <div>
+      <p>Partner</p>
+      <video #remoteVideo autoplay playsinline width="320" height="240"></video>
+    </div>
+  </div>
+
+  <div style="margin-top: 16px;">
+    <div style="border: 1px solid #ccc; height: 150px; overflow-y: auto; padding: 8px;">
+      <div *ngFor="let msg of chatMessages">
+        <strong>{{ msg.fromMe ? 'You' : 'Partner' }}:</strong> {{ msg.text }}
+      </div>
+    </div>
+    <input
+      [(ngModel)]="chatInput"
+      (keyup.enter)="sendMessage()"
+      placeholder="Type a message..."
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>
